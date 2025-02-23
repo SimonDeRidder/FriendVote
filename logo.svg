@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+Copyright 2025 Simon De Ridder
+This file is part of FriendVote.
+FriendVote is free software: you can redistribute it and/or modify it under the terms of the
+GNU General Public License as published by the Free Software Foundation, either version 3 of the License,
+or (at your option) any later version.
+FriendVote is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+You should have received a copy of the GNU General Public License along with FriendVote.
+If not, see <https://www.gnu.org/licenses/>.
+-->
+<svg width="12.7" height="12.7" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<defs>
+		<marker id="arrowhead" overflow="visible" orient="auto-start-reverse">
+			<path fill="context-stroke" d="M 1.55 0 -3.44 2.83 V -2.83 Z"/>
+		</marker>
+	</defs>
+	<rect fill="#01210d" x="0" y="0" width="12.7" height="12.7"/>
+	<g>
+		<circle fill="#efbf04" cx="6.35"  cy="2.12"  r="1.1"/>
+		<circle fill="#c4c4c4" cx="2.12"  cy="6.35"  r="1.1"/>
+		<circle fill="#ce8946" cx="10.58" cy="10.58" r="1.1"/>
+	</g>
+	<g stroke="#daa8a8" stroke-width="0.185" marker-end="url(#arrowhead)">
+		<path d="M 5.58 2.89 L 3.10 5.37"/>
+		<path d="M 6.84 3.10 L 9.96 9.34"/>
+		<path d="M 3.10 6.84 L 9.34 9.96"/>
+	</g>
+</svg>
