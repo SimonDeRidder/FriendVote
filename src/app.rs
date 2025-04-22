@@ -84,40 +84,43 @@ fn HomePage() -> impl IntoView {
 	view! {
 		<h1>"Welcome to FriendVote!"</h1>
 		<div style="display:flex;justify-content:center">
-			<ActionForm action=create_election>
-				<div style="margin:5px;margin-bottom:10px">
-					<label for="election_name">"Election name:"</label>
-					<input id="election_name" type="text" name="election_name"/>
-				</div>
-				<For
-					each=move || {candidates.get().into_iter().enumerate().collect::<Vec<_>>()}
-					key=move |(ind, _)| *ind
-					children=move |(ind, (show_candidate, candidate))| {
-						view! {
-							<Show when=move || show_candidate.get()>
-								<div style="margin:5px">
-									<label for=move || format!("candidate_{}", ind)>{move || format!("Candidate {}:", ind+1)}</label>
-									<input
-										id=move || format!("candidate_{}", ind)
-										type="text"
-										name=move || format!("candidates[{}]", ind)
-										prop:value=candidate
-										on:input:target=move |event| {candidate.set(event.target().value()); if (event.target().value().len() > 0) && (ind==(candidates.read_untracked().len()-1)) {candidates.write().push((RwSignal::new(true), RwSignal::new(String::new())))}}
-									/>
-									<Show when=move || (ind > 1)>
-										<button on:click=move |_| {show_candidate.set(false)}>
-											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" viewBox="0 0 16 16">
-												<path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-											</svg>
-										</button>
-									</Show>
-								</div>
-							</Show>
+			<div>
+				<ActionForm action=create_election>
+					<div style="margin:5px;margin-bottom:10px">
+						<label for="election_name">"Election name:"</label>
+						<input id="election_name" type="text" name="election_name"/>
+					</div>
+					<For
+						each=move || {candidates.get().into_iter().enumerate().collect::<Vec<_>>()}
+						key=move |(ind, _)| *ind
+						children=move |(ind, (show_candidate, candidate))| {
+							view! {
+								<Show when=move || show_candidate.get()>
+									<div style="margin:5px">
+										<label for=move || format!("candidate_{}", ind)>{move || format!("Candidate {}:", ind+1)}</label>
+										<input
+											id=move || format!("candidate_{}", ind)
+											type="text"
+											name=move || format!("candidates[{}]", ind)
+											prop:value=candidate
+											on:input:target=move |event| {candidate.set(event.target().value()); if (event.target().value().len() > 0) && (ind==(candidates.read_untracked().len()-1)) {candidates.write().push((RwSignal::new(true), RwSignal::new(String::new())))}}
+										/>
+										<Show when=move || (ind > 1)>
+											<button on:click=move |_| {show_candidate.set(false)}>
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" viewBox="0 0 16 16">
+													<path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+												</svg>
+											</button>
+										</Show>
+									</div>
+								</Show>
+							}
 						}
-					}
-				/>
-				<input type="submit" on:click:target=move |event| {let _ = event.target().form().expect("form to be connected").request_submit();event.target().set_disabled(true); event.target().set_value("Submitting…");}/>
-			</ActionForm>
+					/>
+					<input type="submit" on:click:target=move |event| {let _ = event.target().form().expect("form to be connected").request_submit();event.target().set_disabled(true); event.target().set_value("Submitting…");}/>
+				</ActionForm>
+				<ExtraInfo/>
+			</div>
 		</div>
 	}
 }
@@ -192,6 +195,9 @@ fn AdminPage() -> impl IntoView {
 				</div>
 			</div>
 		</Suspense>
+		<div>
+			<ExtraInfo/>
+		</div>
 	}
 }
 
@@ -300,6 +306,9 @@ fn VotePage() -> impl IntoView {
 						)
 					}
 				}
+				<div>
+					<ExtraInfo/>
+				</div>
 			</div>
 		</Suspense>
 	}
@@ -432,5 +441,24 @@ fn ResultPage() -> impl IntoView {
 				)
 			}
 		</Suspense>
+	}
+}
+
+#[component]
+fn ExtraInfo() -> impl IntoView {
+	view! {
+		<div class="extra-info-container">
+			<details>
+				<summary style="cursor:pointer">"How does it work?"</summary>
+				<div>
+					<p>
+						"FriendVote is a web application aimed at making simple polls among friends easier and more fair."
+					</p>
+					<p>
+						"It uses "<a href="https://en.wikipedia.org/wiki/Ranked_pairs">"Tideman's Ranked Pairs method"</a>" (a Condorcet voting system) to compute a global ranking from the individual rankings of the votes."
+					</p>
+				</div>
+			</details>
+		</div>
 	}
 }

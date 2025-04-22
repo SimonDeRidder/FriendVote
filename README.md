@@ -2,11 +2,11 @@
 
 ### Running the application server
 
-#### prerequisites
+#### prerequisites for compilation
 
 - check out the repo, and install the rust toolchain (see https://rustup.rs)
 - Add WASM as a compilation target to your Rust toolchain with `rustup target add wasm32-unknown-unknown`
-- Install cargo-leptos with `cargo install cargo-leptos`
+- Install cargo-leptos with `cargo install cargo-leptos` (make sure `perl` and `make` are installed first)
 - set up a PostgreSQL database, and create a database called 'friendvote' in it, and give a user full access to that database.
 
 #### Debug
